@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -147,7 +146,7 @@ const Circle: React.FC<CircleProps> = ({
     <TooltipProvider>
       <Tooltip delayDuration={300}>
         <TooltipTrigger asChild>
-          <div className="inline-block cursor-default">
+          <div className="inline-block pointer-events-auto cursor-default">
             {renderCircle()}
           </div>
         </TooltipTrigger>
