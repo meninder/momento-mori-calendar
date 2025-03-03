@@ -11,18 +11,18 @@ interface CircleProps {
   delay?: number;
   className?: string;
   weekNumber?: number;
-  row?: number;
+  yearIndex?: number;
   weekIndex?: number;
 }
 
 const Circle: React.FC<CircleProps> = ({ 
   filled = false, 
   percentage = 0, 
-  size = 5, // Default to smaller size
+  size = 5,
   delay = 0,
   className,
   weekNumber = 0,
-  row = 0,
+  yearIndex = 0,
   weekIndex = 0
 }) => {
   const circleRef = useRef<SVGCircleElement>(null);
@@ -49,16 +49,17 @@ const Circle: React.FC<CircleProps> = ({
   // Calculate the date range for this week
   const getDateRange = () => {
     // Assuming a standard birth date to calculate from
-    // This is just for the tooltip visualization and can be adjusted
     const birthdate = new Date(1980, 5, 1); // June 1, 1980
     
-    const weekStart = addDays(birthdate, weekNumber * 7);
+    // In the rotated grid, weekIndex is the week of the year (0-51)
+    // and yearIndex is the year number (0-84)
+    const weekStart = addDays(birthdate, (yearIndex * 52 + weekIndex) * 7);
     const weekEnd = addDays(weekStart, 6);
     
     return {
       start: format(weekStart, 'MMM d, yyyy'),
       end: format(weekEnd, 'MMM d, yyyy'),
-      age: `Age ${Math.floor(row / 52)} years, ${weekIndex + 1} ${weekIndex === 0 ? 'week' : 'weeks'}`
+      age: `Age ${yearIndex} years, week ${weekIndex + 1} of year`
     };
   };
 
@@ -141,7 +142,7 @@ const Circle: React.FC<CircleProps> = ({
     <TooltipProvider>
       <Tooltip delayDuration={300}>
         <TooltipTrigger asChild>
-          <div className="inline-block cursor-help">
+          <div className={cn("inline-block cursor-help", className)}>
             {renderCircle()}
           </div>
         </TooltipTrigger>
