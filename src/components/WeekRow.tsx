@@ -3,51 +3,48 @@ import React from 'react';
 import Circle from './Circle';
 
 interface WeekRowProps {
-  weekIndex: number;
+  row: number;
   completedWeeks: number;
-  totalYears: number;
+  totalWeeks: number;
   currentWeek: number | null;
   currentWeekPercentage: number;
   circleSize?: number;
 }
 
 const WeekRow: React.FC<WeekRowProps> = ({ 
-  weekIndex, 
+  row, 
   completedWeeks, 
-  totalYears, 
+  totalWeeks, 
   currentWeek, 
   currentWeekPercentage,
-  circleSize = 5
+  circleSize = 5 // This is the current size (5px)
 }) => {
   // Calculate base delay for the animation
-  const baseDelay = weekIndex * 5;
+  const baseDelay = row * 5;
   
-  // Add extra margin after each decade (every 10 columns)
-  const rowClassName = `flex flex-row space-x-[1px] mb-[2px]`;
+  // Add extra bottom margin after each decade (every 10 rows)
+  // Reduced from mb-4 (1rem/16px) to mb-2 (0.5rem/8px)
+  const isEndOfDecade = (row + 1) % 10 === 0;
+  const rowClassName = `flex space-x-[1px] ${isEndOfDecade ? 'mb-2' : 'mb-[2px]'}`;
 
   return (
     <div className={rowClassName}>
-      {Array.from({ length: totalYears }, (_, yearIndex) => {
-        const weekNumber = yearIndex * 52 + weekIndex;
+      {Array.from({ length: totalWeeks }, (_, weekIndex) => {
+        const weekNumber = row * totalWeeks + weekIndex;
         const isFilled = weekNumber < completedWeeks;
-        const isCurrentWeek = currentWeek !== null && yearIndex === currentWeek;
-        const animationDelay = baseDelay + yearIndex * 3; // Staggered delay for each circle
-        
-        // Add extra right margin after each decade (every 10 columns)
-        const isEndOfDecade = (yearIndex + 1) % 10 === 0 && yearIndex < totalYears - 1;
-        const circleClassName = isEndOfDecade ? 'mr-2' : '';
+        const isCurrentWeek = currentWeek !== null && weekNumber === completedWeeks;
+        const animationDelay = baseDelay + weekIndex * 3; // Staggered delay for each circle
 
         return (
           <Circle 
-            key={yearIndex}
+            key={weekIndex}
             filled={isFilled}
             percentage={isCurrentWeek ? currentWeekPercentage : 0}
             size={circleSize}
             delay={animationDelay}
             weekNumber={weekNumber}
-            yearIndex={yearIndex}
+            row={row}
             weekIndex={weekIndex}
-            className={circleClassName}
           />
         );
       })}

@@ -12,11 +12,12 @@ interface MementoMoriCalendarProps {
 const MementoMoriCalendar: React.FC<MementoMoriCalendarProps> = ({ 
   birthday, 
   lifeExpectancy = 85,
-  circleSize = 5,
+  circleSize = 5, // Reduced from 8 to 5
 }) => {
   const WEEKS_PER_YEAR = 52;
   const [completedWeeks, setCompletedWeeks] = useState(0);
   const [currentWeekPercentage, setCurrentWeekPercentage] = useState(0);
+  const [totalRows, setTotalRows] = useState(lifeExpectancy);
   const [today] = useState(new Date());
 
   useEffect(() => {
@@ -36,27 +37,26 @@ const MementoMoriCalendar: React.FC<MementoMoriCalendarProps> = ({
 
   }, [birthday, today]);
 
-  // Rotated grid: 52 rows (weeks) and lifeExpectancy columns (years)
-  const rowCount = WEEKS_PER_YEAR;
-  const columnCount = lifeExpectancy;
-  
-  // Calculate overall grid dimensions
-  const gridHeight = (circleSize * rowCount) + ((rowCount - 1) * 2); // Account for gap
+  // Calculate grid-related values
+  const columnCount = WEEKS_PER_YEAR;
+  const gridWidth = (circleSize * columnCount) + ((columnCount - 1) * 2); // Account for gap
 
   return (
-    <div className="w-full">
-      <div className="calendar-grid mx-auto" style={{ height: `${gridHeight}px` }}>
-        {Array.from({ length: rowCount }, (_, weekIndex) => (
-          <WeekRow
-            key={weekIndex}
-            weekIndex={weekIndex}
-            completedWeeks={completedWeeks}
-            totalYears={lifeExpectancy}
-            currentWeek={completedWeeks % WEEKS_PER_YEAR === weekIndex ? Math.floor(completedWeeks / WEEKS_PER_YEAR) : null}
-            currentWeekPercentage={currentWeekPercentage}
-            circleSize={circleSize}
-          />
-        ))}
+    <div className="relative w-full overflow-hidden">
+      <div className="calendar-container overflow-auto pb-4">
+        <div className="calendar-grid mx-auto" style={{ width: `${gridWidth}px` }}>
+          {Array.from({ length: totalRows }, (_, rowIndex) => (
+            <WeekRow
+              key={rowIndex}
+              row={rowIndex}
+              completedWeeks={completedWeeks}
+              totalWeeks={WEEKS_PER_YEAR}
+              currentWeek={Math.floor(completedWeeks / WEEKS_PER_YEAR) === rowIndex ? completedWeeks % WEEKS_PER_YEAR : null}
+              currentWeekPercentage={currentWeekPercentage}
+              circleSize={circleSize}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
