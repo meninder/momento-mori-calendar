@@ -8,6 +8,9 @@ import { componentTagger } from "lovable-tagger";
 export default defineConfig(({ mode }) => ({
   // Make sure this exactly matches your GitHub repo name
   base: '/momento-mori-calendar/',
+  build: {
+    outDir: 'docs',
+  },
   server: {
     host: "::",
     port: 8080,
