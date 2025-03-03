@@ -4,11 +4,15 @@ import BirthdayInput from '@/components/BirthdayInput';
 import MementoMoriCalendar from '@/components/MementoMoriCalendar';
 import { useToast } from '@/components/ui/use-toast';
 import { Card, CardContent } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Button } from '@/components/ui/button';
+import { Settings } from 'lucide-react';
 import { differenceInYears } from 'date-fns';
 
 const Index = () => {
-  const [birthday, setBirthday] = useState<Date | undefined>(undefined);
+  // Hardcode default birthday to June 1, 1980
+  const defaultBirthday = new Date(1980, 5, 1); // Month is 0-indexed, so 5 is June
+  const [birthday, setBirthday] = useState<Date | undefined>(defaultBirthday);
   const { toast } = useToast();
   const [hasViewed, setHasViewed] = useState(false);
   
@@ -42,33 +46,32 @@ const Index = () => {
           <h1 className="text-3xl md:text-4xl font-serif font-medium text-slate-800 mb-3">
             Memento Mori Calendar
           </h1>
-          <p className="text-slate-500 max-w-2xl mx-auto">
-            A visual reminder of life's finite nature. Each circle represents one week of your life, 
-            with filled circles showing weeks you've already lived.
-          </p>
         </header>
 
-        <Card className="birthday-container">
-          <CardContent className="pt-6">
-            <BirthdayInput
-              date={birthday}
-              setDate={handleDateChange}
-              className="max-w-sm mx-auto"
-            />
-          </CardContent>
-        </Card>
+        {/* Side panel trigger button */}
+        <div className="fixed right-4 top-4 z-10">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="outline" size="icon">
+                <Settings className="h-4 w-4" />
+                <span className="sr-only">Settings</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent>
+              <div className="py-6">
+                <h3 className="text-lg font-medium mb-4">Calendar Settings</h3>
+                <BirthdayInput
+                  date={birthday}
+                  setDate={handleDateChange}
+                  className="w-full"
+                />
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
 
         {birthday && (
           <div className="mt-8 space-y-4 animate-fade-up">
-            <div className="text-center mb-4">
-              <span className="inline-block px-3 py-1 text-xs font-medium bg-slate-100 text-slate-800 rounded-full mb-2">
-                Your life in weeks
-              </span>
-              <div className="text-slate-700 text-sm">
-                Each row represents one year (52 weeks)
-              </div>
-            </div>
-            
             <Card className="border border-slate-200 shadow-sm bg-white/90 backdrop-blur-sm p-4 rounded-lg">
               <CardContent className="p-0">
                 <MementoMoriCalendar 
