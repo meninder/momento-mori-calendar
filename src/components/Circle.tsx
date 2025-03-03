@@ -2,7 +2,7 @@
 import React, { useEffect, useRef } from 'react';
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { addDays, format } from 'date-fns';
+import { addDays, format, differenceInWeeks } from 'date-fns';
 
 interface CircleProps {
   filled?: boolean;
@@ -55,10 +55,16 @@ const Circle: React.FC<CircleProps> = ({
     const weekStart = addDays(birthdate, weekNumber * 7);
     const weekEnd = addDays(weekStart, 6);
     
+    // Corrected age calculation using differenceInWeeks
+    const currentDate = new Date();
+    const totalWeeksLived = differenceInWeeks(currentDate, birthdate);
+    const ageYears = Math.floor(weekNumber / 52);
+    const ageWeeks = weekNumber % 52;
+    
     return {
       start: format(weekStart, 'MMM d, yyyy'),
       end: format(weekEnd, 'MMM d, yyyy'),
-      age: `Age ${Math.floor(row / 52)} years, ${weekIndex + 1} ${weekIndex === 0 ? 'week' : 'weeks'}`
+      age: `Age ${ageYears} years, ${ageWeeks} ${ageWeeks === 1 ? 'week' : 'weeks'}`
     };
   };
 
@@ -141,7 +147,7 @@ const Circle: React.FC<CircleProps> = ({
     <TooltipProvider>
       <Tooltip delayDuration={300}>
         <TooltipTrigger asChild>
-          <div className="inline-block cursor-help">
+          <div className="inline-block cursor-default">
             {renderCircle()}
           </div>
         </TooltipTrigger>
