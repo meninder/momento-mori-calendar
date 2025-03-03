@@ -45,16 +45,12 @@ const Circle: React.FC<CircleProps> = ({
     }
   }, [percentage, circumference, delay]);
 
-  // Calculate the date range for this week
   const getDateRange = () => {
-    // Assuming a standard birth date to calculate from
-    // This is just for the tooltip visualization and can be adjusted
     const birthdate = new Date(1980, 5, 1); // June 1, 1980
     
     const weekStart = addDays(birthdate, weekNumber * 7);
     const weekEnd = addDays(weekStart, 6);
     
-    // Corrected age calculation using differenceInWeeks
     const currentDate = new Date();
     const totalWeeksLived = differenceInWeeks(currentDate, birthdate);
     const ageYears = Math.floor(weekNumber / 52);
@@ -86,7 +82,8 @@ const Circle: React.FC<CircleProps> = ({
           style={{ 
             width: `${size}px`, 
             height: `${size}px`,
-            animationDelay: `${delay}ms`
+            animationDelay: `${delay}ms`,
+            cursor: 'default' // Explicitly set cursor style inline
           }}
         />
       );
@@ -99,7 +96,10 @@ const Circle: React.FC<CircleProps> = ({
           height={size} 
           viewBox={`0 0 ${size} ${size}`} 
           className={cn("animate-fade-in", className)}
-          style={{ animationDelay: `${delay}ms` }}
+          style={{ 
+            animationDelay: `${delay}ms`,
+            cursor: 'default' // Explicitly set cursor style inline
+          }}
         >
           <circle
             cx={size / 2}
@@ -136,7 +136,8 @@ const Circle: React.FC<CircleProps> = ({
         style={{ 
           width: `${size}px`, 
           height: `${size}px`,
-          animationDelay: `${delay}ms`
+          animationDelay: `${delay}ms`,
+          cursor: 'default' // Explicitly set cursor style inline
         }}
       />
     );
@@ -146,7 +147,10 @@ const Circle: React.FC<CircleProps> = ({
     <TooltipProvider>
       <Tooltip delayDuration={300}>
         <TooltipTrigger asChild>
-          <div className="inline-block pointer-events-auto cursor-default">
+          <div 
+            className="inline-block pointer-events-auto" 
+            style={{ cursor: 'default' }} // Force cursor style with inline style
+          >
             {renderCircle()}
           </div>
         </TooltipTrigger>
