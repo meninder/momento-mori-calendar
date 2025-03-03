@@ -44,21 +44,19 @@ const MementoMoriCalendar: React.FC<MementoMoriCalendarProps> = ({
   const gridHeight = (circleSize * rowCount) + ((rowCount - 1) * 2); // Account for gap
 
   return (
-    <div className="relative w-full overflow-hidden">
-      <div className="calendar-container overflow-auto pb-4">
-        <div className="calendar-grid mx-auto" style={{ height: `${gridHeight}px` }}>
-          {Array.from({ length: rowCount }, (_, weekIndex) => (
-            <WeekRow
-              key={weekIndex}
-              weekIndex={weekIndex}
-              completedWeeks={completedWeeks}
-              totalYears={lifeExpectancy}
-              currentWeek={completedWeeks % WEEKS_PER_YEAR === weekIndex ? Math.floor(completedWeeks / WEEKS_PER_YEAR) : null}
-              currentWeekPercentage={currentWeekPercentage}
-              circleSize={circleSize}
-            />
-          ))}
-        </div>
+    <div className="w-full">
+      <div className="calendar-grid mx-auto" style={{ height: `${gridHeight}px` }}>
+        {Array.from({ length: rowCount }, (_, weekIndex) => (
+          <WeekRow
+            key={weekIndex}
+            weekIndex={weekIndex}
+            completedWeeks={completedWeeks}
+            totalYears={lifeExpectancy}
+            currentWeek={completedWeeks % WEEKS_PER_YEAR === weekIndex ? Math.floor(completedWeeks / WEEKS_PER_YEAR) : null}
+            currentWeekPercentage={currentWeekPercentage}
+            circleSize={circleSize}
+          />
+        ))}
       </div>
     </div>
   );

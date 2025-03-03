@@ -81,21 +81,6 @@ const Index = () => {
               </CardContent>
             </Card>
 
-            <div className="flex items-center justify-center space-x-8 mt-6">
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 rounded-full bg-calendar-filled"></div>
-                <span className="text-xs text-slate-600">Weeks lived</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 rounded-full bg-calendar-current"></div>
-                <span className="text-xs text-slate-600">Current week</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 rounded-full bg-calendar-empty"></div>
-                <span className="text-xs text-slate-600">Future weeks</span>
-              </div>
-            </div>
-            
             {birthday && (
               <div className="text-center text-sm text-slate-500 mt-8">
                 <p>
