@@ -1,6 +1,8 @@
 
 import React, { useEffect, useRef } from 'react';
 import { cn } from "@/lib/utils";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { addDays, format } from 'date-fns';
 
 interface CircleProps {
   filled?: boolean;
@@ -8,6 +10,9 @@ interface CircleProps {
   size?: number;
   delay?: number;
   className?: string;
+  weekNumber?: number;
+  row?: number;
+  weekIndex?: number;
 }
 
 const Circle: React.FC<CircleProps> = ({ 
@@ -15,7 +20,10 @@ const Circle: React.FC<CircleProps> = ({
   percentage = 0, 
   size = 5, // Default to smaller size
   delay = 0,
-  className 
+  className,
+  weekNumber = 0,
+  row = 0,
+  weekIndex = 0
 }) => {
   const circleRef = useRef<SVGCircleElement>(null);
   const radius = size / 2 - 0.5; // Smaller stroke width adjustment for smaller circles
@@ -38,11 +46,86 @@ const Circle: React.FC<CircleProps> = ({
     }
   }, [percentage, circumference, delay]);
 
-  if (filled) {
+  // Calculate the date range for this week
+  const getDateRange = () => {
+    // Assuming a standard birth date to calculate from
+    // This is just for the tooltip visualization and can be adjusted
+    const birthdate = new Date(1980, 5, 1); // June 1, 1980
+    
+    const weekStart = addDays(birthdate, weekNumber * 7);
+    const weekEnd = addDays(weekStart, 6);
+    
+    return {
+      start: format(weekStart, 'MMM d, yyyy'),
+      end: format(weekEnd, 'MMM d, yyyy'),
+      age: `Age ${Math.floor(row / 52)} years, ${weekIndex + 1} ${weekIndex === 0 ? 'week' : 'weeks'}`
+    };
+  };
+
+  const dateRange = getDateRange();
+  const tooltipContent = (
+    <>
+      <div className="font-medium">{dateRange.age}</div>
+      <div className="text-xs text-muted-foreground">{dateRange.start} - {dateRange.end}</div>
+    </>
+  );
+
+  const renderCircle = () => {
+    if (filled) {
+      return (
+        <div 
+          className={cn(
+            "bg-calendar-filled rounded-full animate-fade-in",
+            className
+          )}
+          style={{ 
+            width: `${size}px`, 
+            height: `${size}px`,
+            animationDelay: `${delay}ms`
+          }}
+        />
+      );
+    }
+    
+    if (percentage > 0) {
+      return (
+        <svg 
+          width={size} 
+          height={size} 
+          viewBox={`0 0 ${size} ${size}`} 
+          className={cn("animate-fade-in", className)}
+          style={{ animationDelay: `${delay}ms` }}
+        >
+          <circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            fill="transparent"
+            stroke="#E5E7EB"
+            strokeWidth="0.5" // Thinner stroke for smaller circles
+          />
+          <circle
+            ref={circleRef}
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            fill="transparent"
+            stroke="#64748B"
+            strokeWidth="0.5" // Thinner stroke for smaller circles
+            strokeLinecap="round"
+            style={{
+              transformOrigin: 'center',
+              transform: 'rotate(-90deg)',
+            }}
+          />
+        </svg>
+      );
+    }
+
     return (
       <div 
         className={cn(
-          "bg-calendar-filled rounded-full animate-fade-in",
+          "bg-calendar-empty rounded-full animate-fade-in",
           className
         )}
         style={{ 
@@ -52,55 +135,21 @@ const Circle: React.FC<CircleProps> = ({
         }}
       />
     );
-  }
-  
-  if (percentage > 0) {
-    return (
-      <svg 
-        width={size} 
-        height={size} 
-        viewBox={`0 0 ${size} ${size}`} 
-        className={cn("animate-fade-in", className)}
-        style={{ animationDelay: `${delay}ms` }}
-      >
-        <circle
-          cx={size / 2}
-          cy={size / 2}
-          r={radius}
-          fill="transparent"
-          stroke="#E5E7EB"
-          strokeWidth="0.5" // Thinner stroke for smaller circles
-        />
-        <circle
-          ref={circleRef}
-          cx={size / 2}
-          cy={size / 2}
-          r={radius}
-          fill="transparent"
-          stroke="#64748B"
-          strokeWidth="0.5" // Thinner stroke for smaller circles
-          strokeLinecap="round"
-          style={{
-            transformOrigin: 'center',
-            transform: 'rotate(-90deg)',
-          }}
-        />
-      </svg>
-    );
-  }
+  };
 
   return (
-    <div 
-      className={cn(
-        "bg-calendar-empty rounded-full animate-fade-in",
-        className
-      )}
-      style={{ 
-        width: `${size}px`, 
-        height: `${size}px`,
-        animationDelay: `${delay}ms`
-      }}
-    />
+    <TooltipProvider>
+      <Tooltip delayDuration={300}>
+        <TooltipTrigger asChild>
+          <div className="inline-block cursor-help">
+            {renderCircle()}
+          </div>
+        </TooltipTrigger>
+        <TooltipContent side="top" className="z-50 text-xs">
+          {tooltipContent}
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };
 

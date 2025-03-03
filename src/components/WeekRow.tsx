@@ -21,9 +21,13 @@ const WeekRow: React.FC<WeekRowProps> = ({
 }) => {
   // Calculate base delay for the animation
   const baseDelay = row * 5;
+  
+  // Add extra bottom margin after each decade (every 10 rows)
+  const isEndOfDecade = (row + 1) % 10 === 0;
+  const rowClassName = `flex space-x-[1px] ${isEndOfDecade ? 'mb-4' : 'mb-[2px]'}`;
 
   return (
-    <div className="flex space-x-[1px]"> {/* Reduced spacing from 2px to 1px */}
+    <div className={rowClassName}>
       {Array.from({ length: totalWeeks }, (_, weekIndex) => {
         const weekNumber = row * totalWeeks + weekIndex;
         const isFilled = weekNumber < completedWeeks;
@@ -37,6 +41,9 @@ const WeekRow: React.FC<WeekRowProps> = ({
             percentage={isCurrentWeek ? currentWeekPercentage : 0}
             size={circleSize}
             delay={animationDelay}
+            weekNumber={weekNumber}
+            row={row}
+            weekIndex={weekIndex}
           />
         );
       })}
