@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from 'react';
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -121,6 +122,7 @@ const Circle: React.FC<CircleProps> = ({
             style={{
               transformOrigin: 'center',
               transform: 'rotate(-90deg)',
+              cursor: 'default' // Add cursor style to SVG circle
             }}
           />
         </svg>
@@ -144,21 +146,21 @@ const Circle: React.FC<CircleProps> = ({
   };
 
   return (
-    <TooltipProvider>
-      <Tooltip delayDuration={300}>
-        <TooltipTrigger asChild>
-          <div 
-            className="inline-block pointer-events-auto" 
-            style={{ cursor: 'default' }} // Force cursor style with inline style
-          >
-            {renderCircle()}
-          </div>
-        </TooltipTrigger>
-        <TooltipContent side="top" className="z-50 text-xs">
-          {tooltipContent}
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+    <div className="inline-block" style={{ cursor: 'default' }}>
+      {/* Removed TooltipProvider/Tooltip/TooltipTrigger and applying tooltip directly */}
+      <TooltipProvider>
+        <Tooltip delayDuration={300}>
+          <TooltipTrigger asChild>
+            <span style={{ cursor: 'default' }}>
+              {renderCircle()}
+            </span>
+          </TooltipTrigger>
+          <TooltipContent side="top" className="z-50 text-xs">
+            {tooltipContent}
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    </div>
   );
 };
 
