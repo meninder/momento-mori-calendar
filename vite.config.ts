@@ -6,7 +6,8 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: mode === 'production' ? './' : '/',  // Use relative paths in production for GitHub Pages
+  // Set base path for GitHub Pages to the repository name
+  base: mode === 'production' ? '/momento-mori-calendar/' : '/',
   server: {
     host: "::",
     port: 8080,
