@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import BirthdayInput from '@/components/BirthdayInput';
 import MementoMoriCalendar from '@/components/MementoMoriCalendar';
@@ -42,11 +41,7 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col items-center py-12 px-4 md:px-8 bg-gradient-to-b from-slate-50 to-white">
       <div className="w-full max-w-4xl mx-auto animate-fade-up">
-        <header className="text-center mb-12">
-          <h1 className="text-3xl md:text-4xl font-serif font-medium text-slate-800 mb-3">
-            Memento Mori Calendar
-          </h1>
-        </header>
+        {/* Removed the header and title */}
 
         {/* Side panel trigger button */}
         <div className="fixed right-4 top-4 z-10">
@@ -80,21 +75,6 @@ const Index = () => {
                 />
               </CardContent>
             </Card>
-
-            <div className="flex items-center justify-center space-x-8 mt-6">
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 rounded-full bg-calendar-filled"></div>
-                <span className="text-xs text-slate-600">Weeks lived</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 rounded-full bg-calendar-current"></div>
-                <span className="text-xs text-slate-600">Current week</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 rounded-full bg-calendar-empty"></div>
-                <span className="text-xs text-slate-600">Future weeks</span>
-              </div>
-            </div>
             
             {birthday && (
               <div className="text-center text-sm text-slate-500 mt-8">
