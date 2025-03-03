@@ -76,7 +76,7 @@ const Index = () => {
               <CardContent className="p-0">
                 <MementoMoriCalendar 
                   birthday={birthday} 
-                  circleSize={8}
+                  circleSize={5}
                 />
               </CardContent>
             </Card>

@@ -17,13 +17,13 @@ const WeekRow: React.FC<WeekRowProps> = ({
   totalWeeks, 
   currentWeek, 
   currentWeekPercentage,
-  circleSize = 8
+  circleSize = 5 // Reduced from 8 to 5
 }) => {
   // Calculate base delay for the animation
   const baseDelay = row * 5;
 
   return (
-    <div className="flex space-x-[2px]">
+    <div className="flex space-x-[1px]"> {/* Reduced spacing from 2px to 1px */}
       {Array.from({ length: totalWeeks }, (_, weekIndex) => {
         const weekNumber = row * totalWeeks + weekIndex;
         const isFilled = weekNumber < completedWeeks;

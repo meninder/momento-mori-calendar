@@ -13,12 +13,12 @@ interface CircleProps {
 const Circle: React.FC<CircleProps> = ({ 
   filled = false, 
   percentage = 0, 
-  size = 8, 
+  size = 5, // Default to smaller size
   delay = 0,
   className 
 }) => {
   const circleRef = useRef<SVGCircleElement>(null);
-  const radius = size / 2 - 1; // Accounting for stroke width
+  const radius = size / 2 - 0.5; // Smaller stroke width adjustment for smaller circles
   const circumference = 2 * Math.PI * radius;
   
   useEffect(() => {
@@ -69,7 +69,7 @@ const Circle: React.FC<CircleProps> = ({
           r={radius}
           fill="transparent"
           stroke="#E5E7EB"
-          strokeWidth="1"
+          strokeWidth="0.5" // Thinner stroke for smaller circles
         />
         <circle
           ref={circleRef}
@@ -78,7 +78,7 @@ const Circle: React.FC<CircleProps> = ({
           r={radius}
           fill="transparent"
           stroke="#64748B"
-          strokeWidth="1"
+          strokeWidth="0.5" // Thinner stroke for smaller circles
           strokeLinecap="round"
           style={{
             transformOrigin: 'center',

@@ -12,7 +12,7 @@ interface MementoMoriCalendarProps {
 const MementoMoriCalendar: React.FC<MementoMoriCalendarProps> = ({ 
   birthday, 
   lifeExpectancy = 85,
-  circleSize = 8,
+  circleSize = 5, // Reduced from 8 to 5
 }) => {
   const WEEKS_PER_YEAR = 52;
   const [completedWeeks, setCompletedWeeks] = useState(0);
