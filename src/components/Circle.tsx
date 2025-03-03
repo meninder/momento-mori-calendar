@@ -141,7 +141,7 @@ const Circle: React.FC<CircleProps> = ({
     <TooltipProvider>
       <Tooltip delayDuration={300}>
         <TooltipTrigger asChild>
-          <div className="inline-block cursor-help">
+          <div className="inline-block">
             {renderCircle()}
           </div>
         </TooltipTrigger>
