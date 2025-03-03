@@ -2,7 +2,7 @@
 import React, { useEffect, useRef } from 'react';
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { addDays, format, differenceInWeeks } from 'date-fns';
+import { addDays, format } from 'date-fns';
 
 interface CircleProps {
   filled?: boolean;
@@ -46,21 +46,19 @@ const Circle: React.FC<CircleProps> = ({
     }
   }, [percentage, circumference, delay]);
 
+  // Calculate the date range for this week
   const getDateRange = () => {
+    // Assuming a standard birth date to calculate from
+    // This is just for the tooltip visualization and can be adjusted
     const birthdate = new Date(1980, 5, 1); // June 1, 1980
     
     const weekStart = addDays(birthdate, weekNumber * 7);
     const weekEnd = addDays(weekStart, 6);
     
-    const currentDate = new Date();
-    const totalWeeksLived = differenceInWeeks(currentDate, birthdate);
-    const ageYears = Math.floor(weekNumber / 52);
-    const ageWeeks = weekNumber % 52;
-    
     return {
       start: format(weekStart, 'MMM d, yyyy'),
       end: format(weekEnd, 'MMM d, yyyy'),
-      age: `Age ${ageYears} years, ${ageWeeks} ${ageWeeks === 1 ? 'week' : 'weeks'}`
+      age: `Age ${Math.floor(row / 52)} years, ${weekIndex + 1} ${weekIndex === 0 ? 'week' : 'weeks'}`
     };
   };
 
@@ -83,8 +81,7 @@ const Circle: React.FC<CircleProps> = ({
           style={{ 
             width: `${size}px`, 
             height: `${size}px`,
-            animationDelay: `${delay}ms`,
-            cursor: 'default' // Explicitly set cursor style inline
+            animationDelay: `${delay}ms`
           }}
         />
       );
@@ -97,10 +94,7 @@ const Circle: React.FC<CircleProps> = ({
           height={size} 
           viewBox={`0 0 ${size} ${size}`} 
           className={cn("animate-fade-in", className)}
-          style={{ 
-            animationDelay: `${delay}ms`,
-            cursor: 'default' // Explicitly set cursor style inline
-          }}
+          style={{ animationDelay: `${delay}ms` }}
         >
           <circle
             cx={size / 2}
@@ -122,7 +116,6 @@ const Circle: React.FC<CircleProps> = ({
             style={{
               transformOrigin: 'center',
               transform: 'rotate(-90deg)',
-              cursor: 'default' // Add cursor style to SVG circle
             }}
           />
         </svg>
@@ -138,29 +131,25 @@ const Circle: React.FC<CircleProps> = ({
         style={{ 
           width: `${size}px`, 
           height: `${size}px`,
-          animationDelay: `${delay}ms`,
-          cursor: 'default' // Explicitly set cursor style inline
+          animationDelay: `${delay}ms`
         }}
       />
     );
   };
 
   return (
-    <div className="inline-block" style={{ cursor: 'default' }}>
-      {/* Removed TooltipProvider/Tooltip/TooltipTrigger and applying tooltip directly */}
-      <TooltipProvider>
-        <Tooltip delayDuration={300}>
-          <TooltipTrigger asChild>
-            <span style={{ cursor: 'default' }}>
-              {renderCircle()}
-            </span>
-          </TooltipTrigger>
-          <TooltipContent side="top" className="z-50 text-xs">
-            {tooltipContent}
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
-    </div>
+    <TooltipProvider>
+      <Tooltip delayDuration={300}>
+        <TooltipTrigger asChild>
+          <div className="inline-block cursor-help">
+            {renderCircle()}
+          </div>
+        </TooltipTrigger>
+        <TooltipContent side="top" className="z-50 text-xs">
+          {tooltipContent}
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };
 
