@@ -17,14 +17,15 @@ const WeekRow: React.FC<WeekRowProps> = ({
   totalWeeks, 
   currentWeek, 
   currentWeekPercentage,
-  circleSize = 5 // Reduced from 8 to 5
+  circleSize = 5 // This is the current size (5px)
 }) => {
   // Calculate base delay for the animation
   const baseDelay = row * 5;
   
   // Add extra bottom margin after each decade (every 10 rows)
+  // Reduced from mb-4 (1rem/16px) to mb-2 (0.5rem/8px)
   const isEndOfDecade = (row + 1) % 10 === 0;
-  const rowClassName = `flex space-x-[1px] ${isEndOfDecade ? 'mb-4' : 'mb-[2px]'}`;
+  const rowClassName = `flex space-x-[1px] ${isEndOfDecade ? 'mb-2' : 'mb-[2px]'}`;
 
   return (
     <div className={rowClassName}>
