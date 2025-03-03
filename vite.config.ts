@@ -9,6 +9,7 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
   },
+  base: process.env.NODE_ENV === 'production' ? '/momento-mori-calendar/' : '/',
   plugins: [
     react(),
     mode === 'development' &&
@@ -19,4 +20,8 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    outDir: 'docs',
+    emptyOutDir: true,
+  }
 }));
