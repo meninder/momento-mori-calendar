@@ -55,7 +55,7 @@ const MementoMoriCalendar: React.FC<MementoMoriCalendarProps> = ({
   return (
     <div className="relative w-full overflow-hidden">
       <div className="calendar-container pb-4">
-        <div className="flex justify-between gap-8">
+        <div className="flex justify-center gap-4">
           {/* First column (years 0-44) */}
           <div className="calendar-grid" style={{ width: `${gridWidth}px` }}>
             {Array.from({ length: ROWS_PER_COLUMN }, (_, rowIndex) => (
