@@ -75,7 +75,7 @@ const Circle: React.FC<CircleProps> = ({
       return (
         <div 
           className={cn(
-            "bg-calendar-filled rounded-full animate-fade-in",
+            "bg-calendar-filled rounded-full animate-fade-in cursor-default",
             className
           )}
           style={{ 
@@ -93,7 +93,7 @@ const Circle: React.FC<CircleProps> = ({
           width={size} 
           height={size} 
           viewBox={`0 0 ${size} ${size}`} 
-          className={cn("animate-fade-in", className)}
+          className={cn("animate-fade-in cursor-default", className)}
           style={{ animationDelay: `${delay}ms` }}
         >
           <circle
@@ -125,7 +125,7 @@ const Circle: React.FC<CircleProps> = ({
     return (
       <div 
         className={cn(
-          "bg-calendar-empty rounded-full animate-fade-in",
+          "bg-calendar-empty rounded-full animate-fade-in cursor-default",
           className
         )}
         style={{ 
@@ -141,11 +141,11 @@ const Circle: React.FC<CircleProps> = ({
     <TooltipProvider>
       <Tooltip delayDuration={300}>
         <TooltipTrigger asChild>
-          <div className="inline-block">
+          <div className="inline-block cursor-default" style={{ cursor: 'default' }}>
             {renderCircle()}
           </div>
         </TooltipTrigger>
-        <TooltipContent side="top" className="z-50 text-xs">
+        <TooltipContent side="top" className="z-50 text-xs cursor-default">
           {tooltipContent}
         </TooltipContent>
       </Tooltip>
