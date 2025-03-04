@@ -111,10 +111,11 @@ const Circle: React.FC<CircleProps> = ({
             width: `${currentSize}px`, 
             height: `${currentSize}px`,
             animationDelay: `${delay}ms`,
-            transform: isHovered ? "scale(1.8)" : "scale(1)", // Increased scale
-            boxShadow: isHovered ? "0 0 8px rgba(0,0,0,0.4)" : "none", // More pronounced shadow
-            position: "relative", // Ensure z-index works
-            transition: "all 0.2s ease-out" // Smoother transition
+            transform: isHovered ? "scale(1.8)" : "scale(1)",
+            boxShadow: isHovered ? "0 0 8px rgba(0,0,0,0.4)" : "none",
+            backgroundColor: isHovered ? "#9b87f5" : "#1E293B", // Purple color on hover
+            position: "relative",
+            transition: "all 0.2s ease-out"
           }}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
@@ -131,10 +132,10 @@ const Circle: React.FC<CircleProps> = ({
           className={cn("animate-fade-in cursor-pointer transition-all duration-300 hover:z-10", className)}
           style={{ 
             animationDelay: `${delay}ms`,
-            transform: isHovered ? "scale(1.8)" : "scale(1)", // Increased scale
-            filter: isHovered ? "drop-shadow(0 0 4px rgba(0,0,0,0.4))" : "none", // More pronounced shadow
-            position: "relative", // Ensure z-index works
-            transition: "all 0.2s ease-out" // Smoother transition
+            transform: isHovered ? "scale(1.8)" : "scale(1)",
+            filter: isHovered ? "drop-shadow(0 0 4px rgba(0,0,0,0.4))" : "none",
+            position: "relative",
+            transition: "all 0.2s ease-out"
           }}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
@@ -153,7 +154,7 @@ const Circle: React.FC<CircleProps> = ({
             cy={currentSize / 2}
             r={currentRadius}
             fill="transparent"
-            stroke={isHovered ? "#374151" : "#64748B"} // Darker when hovered
+            stroke={isHovered ? "#9b87f5" : "#64748B"} // Purple on hover, gray otherwise
             strokeWidth={isHovered ? "1" : "0.5"} // Thicker stroke when hovered
             strokeLinecap="round"
             style={{
@@ -175,10 +176,11 @@ const Circle: React.FC<CircleProps> = ({
           width: `${currentSize}px`, 
           height: `${currentSize}px`,
           animationDelay: `${delay}ms`,
-          transform: isHovered ? "scale(1.8)" : "scale(1)", // Increased scale
-          boxShadow: isHovered ? "0 0 8px rgba(0,0,0,0.4)" : "none", // More pronounced shadow
-          position: "relative", // Ensure z-index works
-          transition: "all 0.2s ease-out" // Smoother transition
+          transform: isHovered ? "scale(1.8)" : "scale(1)",
+          boxShadow: isHovered ? "0 0 8px rgba(0,0,0,0.4)" : "none",
+          backgroundColor: isHovered ? "#D6BCFA" : "#E5E7EB", // Light purple on hover, gray otherwise
+          position: "relative",
+          transition: "all 0.2s ease-out"
         }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
