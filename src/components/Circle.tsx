@@ -15,6 +15,23 @@ interface CircleProps {
   weekIndex?: number;
 }
 
+// DEBUGGING: Create a separate testing function
+const testDateRange = (weekNum: number) => {
+  const birthdate = new Date(1980, 6, 1);
+  const weeksSinceBirth = weekNum - 1;
+  const targetDate = addDays(birthdate, weeksSinceBirth * 7);
+  let ageAtThisWeek = differenceInYears(targetDate, birthdate);
+  const weekStart = addDays(birthdate, weeksSinceBirth * 7);
+  const weekEnd = addDays(weekStart, 6);
+  const weekOfYear = (weekNum - 1) % 52 + 1;
+
+  return {
+      start: format(weekStart, 'MMM d, yyyy'),
+      end: format(weekEnd, 'MMM d, yyyy'),
+      age: `Age ${ageAtThisWeek} years, ${weekOfYear} weeks of life`
+  };
+};
+
 const Circle: React.FC<CircleProps> = ({ 
   filled = false, 
   percentage = 0, 
@@ -70,7 +87,6 @@ const Circle: React.FC<CircleProps> = ({
       age: `Age ${ageAtThisWeek} years, ${weekOfYear} weeks of life`
     };
   };
-
 
   const dateRange = getDateRange();
   const tooltipContent = (
@@ -163,27 +179,9 @@ const Circle: React.FC<CircleProps> = ({
 
 export default Circle;
 
- // DEBUGGING: Create a separate testing function
- const testDateRange = (weekNum: number) => {
-  const birthdate = new Date(1980, 6, 1);
-  const weeksSinceBirth = weekNum - 1;
-  const targetDate = addDays(birthdate, weeksSinceBirth * 7);
-  let ageAtThisWeek = differenceInYears(targetDate, birthdate);
-  const weekStart = addDays(birthdate, weeksSinceBirth * 7);
-  const weekEnd = addDays(weekStart, 6);
-  const weekOfYear = (weekNum - 1) % 52 + 1;
-
-  return {
-      start: format(weekStart, 'MMM d, yyyy'),
-      end: format(weekEnd, 'MMM d, yyyy'),
-      age: `Age ${ageAtThisWeek} years, ${weekOfYear} weeks of life`
-  };
-};
-
-useEffect(() => {
-  console.log("Week 100:", testDateRange(100));
-  console.log("Week 521:", testDateRange(521));
-  console.log("Week 522:", testDateRange(522));
-  console.log("Week 572:", testDateRange(572));
-  console.log("Week 1040:", testDateRange(1040));
-}, []);
+// For debugging purposes, we can log test results using a normal function call
+// console.log("Week 100:", testDateRange(100));
+// console.log("Week 521:", testDateRange(521));
+// console.log("Week 522:", testDateRange(522));
+// console.log("Week 572:", testDateRange(572));
+// console.log("Week 1040:", testDateRange(1040));
