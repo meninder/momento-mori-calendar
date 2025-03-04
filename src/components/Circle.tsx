@@ -47,7 +47,7 @@ const Circle: React.FC<CircleProps> = ({
   }, [percentage, circumference, delay]);
 
   const getDateRange = () => {
-    const birthdate = new Date(1980, 5, 1); // June 1, 1980 (Month is 0-indexed)
+    const birthdate = new Date(1980, 6, 1); // June 1, 1980 (Month is 0-indexed)
   
     // Use differenceInWeeks to calculate age, accounting for partial years
     const weeksSinceBirth = weekNumber - 1; // Adjust week number to be 0-indexed
@@ -162,3 +162,28 @@ const Circle: React.FC<CircleProps> = ({
 };
 
 export default Circle;
+
+ // DEBUGGING: Create a separate testing function
+ const testDateRange = (weekNum: number) => {
+  const birthdate = new Date(1980, 6, 1);
+  const weeksSinceBirth = weekNum - 1;
+  const targetDate = addDays(birthdate, weeksSinceBirth * 7);
+  let ageAtThisWeek = differenceInYears(targetDate, birthdate);
+  const weekStart = addDays(birthdate, weeksSinceBirth * 7);
+  const weekEnd = addDays(weekStart, 6);
+  const weekOfYear = (weekNum - 1) % 52 + 1;
+
+  return {
+      start: format(weekStart, 'MMM d, yyyy'),
+      end: format(weekEnd, 'MMM d, yyyy'),
+      age: `Age ${ageAtThisWeek} years, ${weekOfYear} weeks of life`
+  };
+};
+
+useEffect(() => {
+  console.log("Week 100:", testDateRange(100));
+  console.log("Week 521:", testDateRange(521));
+  console.log("Week 522:", testDateRange(522));
+  console.log("Week 572:", testDateRange(572));
+  console.log("Week 1040:", testDateRange(1040));
+}, []);
