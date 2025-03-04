@@ -11,9 +11,8 @@ import { differenceInYears } from 'date-fns';
 import { TooltipProvider } from '@/components/ui/tooltip';
 
 const Index = () => {
-  // Hardcode default birthday to June 1, 1980
-  const defaultBirthday = new Date(1980, 5, 1); // Month is 0-indexed, so 5 is June
-  const [birthday, setBirthday] = useState<Date | undefined>(defaultBirthday);
+  // Use state for birthday with no default value
+  const [birthday, setBirthday] = useState<Date | undefined>(undefined);
   const { toast } = useToast();
   const [hasViewed, setHasViewed] = useState(false);
   
@@ -62,12 +61,17 @@ const Index = () => {
                   setDate={handleDateChange}
                   className="w-full"
                 />
+                {!birthday && (
+                  <p className="text-sm text-muted-foreground mt-2">
+                    Please select your birthday to generate the calendar.
+                  </p>
+                )}
               </div>
             </SheetContent>
           </Sheet>
         </div>
 
-        {birthday && (
+        {birthday ? (
           <div className="mt-4 space-y-4 animate-fade-up">
             <Card className="border border-slate-200 shadow-sm bg-white/90 backdrop-blur-sm p-4 rounded-lg">
               <CardContent className="p-0">
@@ -80,13 +84,23 @@ const Index = () => {
               </CardContent>
             </Card>
             
-            {birthday && (
-              <div className="text-center text-sm text-slate-500 mt-4">
-                <p>
-                  "Remember that you will die. Let that inform how you live today."
-                </p>
-              </div>
-            )}
+            <div className="text-center text-sm text-slate-500 mt-4">
+              <p>
+                "Remember that you will die. Let that inform how you live today."
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center h-[50vh] text-center">
+            <p className="text-lg text-slate-600 mb-4">
+              Select your birthday in the settings to generate your Memento Mori Calendar
+            </p>
+            <SheetTrigger asChild>
+              <Button>
+                <Settings className="mr-2 h-4 w-4" />
+                Open Settings
+              </Button>
+            </SheetTrigger>
           </div>
         )}
       </div>
