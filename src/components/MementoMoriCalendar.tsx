@@ -24,11 +24,21 @@ const MementoMoriCalendar: React.FC<MementoMoriCalendarProps> = ({
     if (!birthday) return;
 
     // Calculate weeks lived
-    const weeksLived = differenceInWeeks(today, birthday);
-    setCompletedWeeks(weeksLived);
+    const weekNumber = differenceInWeeks(today, birthday);
+    const fullYears = Math.floor(weekNumber / 52)
+
+    // Calculate the anniversary date for the current year
+    const currentYear = today.getFullYear();
+    const birthdayThisYear = new Date(currentYear, birthday.getMonth(), birthday.getDate());
+    if(birthdayThisYear > today){
+      birthdayThisYear.setFullYear(currentYear - 1);
+  }
+    const circlesToFill = (fullYears * 52) + differenceInWeeks(today, birthdayThisYear);
+
+    setCompletedWeeks(circlesToFill);
 
     // Calculate current week percentage
-    const currentWeekStart = startOfWeek(addDays(birthday, weeksLived * 7));
+    const currentWeekStart = startOfWeek(addDays(birthday, weekNumber  * 7));
     const currentWeekEnd = endOfWeek(currentWeekStart);
     const totalDaysInWeek = 7;
     const daysPassedInCurrentWeek = differenceInDays(today, currentWeekStart);
