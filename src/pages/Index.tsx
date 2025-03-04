@@ -43,7 +43,7 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col items-center py-8 px-4 md:px-8 bg-gradient-to-b from-slate-50 to-white">
       <div className="w-full mx-auto animate-fade-up">
-        <h1 className="text-3xl font-serif text-center mb-6">Life in Weeks</h1>
+        <h1 className="text-3xl font-serif text-center mb-6">Memento Mori Calendar</h1>
         
         {/* Side panel trigger button */}
         <div className="fixed right-4 top-4 z-10">
