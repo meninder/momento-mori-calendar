@@ -48,24 +48,38 @@ const Circle: React.FC<CircleProps> = ({
 
   const getDateRange = () => {
     const birthdate = new Date(1980, 5, 1); // June 1, 1980 (Month is 0-indexed)
-    
+  
+    //  Key Adjustment: Use differenceInWeeks to calculate age, accounting for partial years
+    const weeksSinceBirth = weekNumber - 1; // Adjust week number to be 0-indexed
+    const targetDate = addDays(birthdate, weeksSinceBirth * 7); // Calculate the date for the *start* of the week
+  
+    // Calculate age at this target date
+    let ageAtThisWeek = differenceInYears(targetDate, birthdate);
+  
+    // Account for partial years:
+    // If the target date is BEFORE the birthday in the current year, subtract 1
+    const birthdateThisYear = new Date(targetDate.getFullYear(), birthdate.getMonth(), birthdate.getDate());
+    if (targetDate < birthdateThisYear) {
+      ageAtThisWeek = ageAtThisWeek -1;
+    }
+  
+  
+  
     // Calculate the dates for this specific week
-    const weekStart = addDays(birthdate, weekNumber * 7);
+    const weekStart = addDays(birthdate, weeksSinceBirth * 7); // Recalculate Week start based on weeksSinceBirth
     const weekEnd = addDays(weekStart, 6);
-
-    // Calculate age at the midpoint of the week for consistency
-    const weekMidpoint = addDays(weekStart, 3);
-    const ageAtThisWeek = differenceInYears(weekMidpoint, birthdate);
-
-    // Calculate the week number of life
-    const weekOfLife = weekNumber + 1;
-
+  
+    // Calculate the week number of life (add 1 to make it human-readable, starting from 1)
+    const weekOfLife = weekNumber;
+  
+  
     return {
       start: format(weekStart, 'MMM d, yyyy'),
       end: format(weekEnd, 'MMM d, yyyy'),
       age: `Age ${ageAtThisWeek} years, week ${weekOfLife} of life`
     };
   };
+
 
   const dateRange = getDateRange();
   const tooltipContent = (
