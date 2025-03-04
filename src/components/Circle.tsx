@@ -2,7 +2,7 @@
 import React, { useEffect, useRef } from 'react';
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { addDays, format, differenceInYears } from 'date-fns';
+import { addDays, differenceInYears, format, differenceInWeeks } from 'date-fns';
 
 interface CircleProps {
   filled?: boolean;
@@ -32,12 +32,12 @@ const Circle: React.FC<CircleProps> = ({
   useEffect(() => {
     if (circleRef.current && percentage > 0 && percentage < 100) {
       const strokeDashoffset = circumference - (percentage / 100) * circumference;
-      
+
       // Set the initial position
       circleRef.current.style.setProperty('--circumference', `${circumference}px`);
       circleRef.current.style.strokeDasharray = `${circumference} ${circumference}`;
       circleRef.current.style.strokeDashoffset = `${circumference}px`;
-      
+
       // Add a small delay before animation to create a staggered effect
       setTimeout(() => {
         circleRef.current!.style.strokeDashoffset = `${strokeDashoffset}px`;
@@ -47,23 +47,31 @@ const Circle: React.FC<CircleProps> = ({
   }, [percentage, circumference, delay]);
 
   const getDateRange = () => {
-    const birthdate = new Date(1980, 5, 1); // June 1, 1980
+    const birthdate = new Date(1980, 5, 1); // June 1, 1980 (Month is 0-indexed)
     const today = new Date();
-    
+
     // Calculate the dates for this specific week
     const weekStart = addDays(birthdate, weekNumber * 7);
     const weekEnd = addDays(weekStart, 6);
-    
-    // Calculate the correct age at this point in time
-    let actualAge = differenceInYears(today, birthdate);
-    
-    // Calculate what age the person was during this specific week
+
+    // Calculate the age at the *end* of the week. Crucial for accuracy.
     let ageAtThisWeek = differenceInYears(weekEnd, birthdate);
-    
+
+    // Adjust age if the birthdate hasn't occurred yet this year.  Important for accuracy.
+    if (
+      weekEnd.getMonth() < birthdate.getMonth() ||
+      (weekEnd.getMonth() === birthdate.getMonth() && weekEnd.getDate() < birthdate.getDate())
+    ) {
+      ageAtThisWeek--;
+    }
+
+    // Calculate the number of weeks *since* the birthdate. Also vital.
+    const weeksSinceBirthdate = differenceInWeeks(weekEnd, birthdate);
+
     return {
       start: format(weekStart, 'MMM d, yyyy'),
       end: format(weekEnd, 'MMM d, yyyy'),
-      age: `Age ${ageAtThisWeek} years, ${weekIndex + 1} ${weekIndex === 0 ? 'week' : 'weeks'}`
+      age: `Age ${ageAtThisWeek} years, week ${weeksSinceBirthdate + 1} of life`
     };
   };
 
