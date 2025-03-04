@@ -48,21 +48,20 @@ const Circle: React.FC<CircleProps> = ({
 
   const getDateRange = () => {
     const birthdate = new Date(1980, 5, 1); 
-    let weekStart;
+    
+    const yearsToAdd = Math.floor(weekNumber / 52);
+    const weeksToAdd = weekNumber % 52;
 
-    if (weekNumber % 52 === 0 && weekNumber > 0) {
-      const yearsToAdd = weekNumber / 52;
-      let newYear = birthdate.getFullYear() + yearsToAdd;
-      weekStart = new Date(newYear, birthdate.getMonth(), birthdate.getDate());
-  } else {
-      weekStart = addDays(birthdate, weekNumber * 7);
-  }
+    let newYear = birthdate.getFullYear() + yearsToAdd;
+    let weekStart = new Date(newYear, birthdate.getMonth(), birthdate.getDate()); // Start at birthday that year
+    weekStart = addDays(weekStart, weeksToAdd * 7);  // Then add the remaining weeks.
+
+    const weekEnd = addDays(weekStart, 6);
+    const ageAtThisWeek = differenceInYears(weekStart, birthdate);
+    const weekOfLife = weekNumber % 52;
+    
   
-  const weekEnd = addDays(weekStart, 6);
-  const ageAtThisWeek = differenceInYears(weekStart, birthdate);
-  const weekOfLife = weekNumber % 52;
-  
-  return {
+    return {
       start: format(weekStart, 'MMM d, yyyy'),
       end: format(weekEnd, 'MMM d, yyyy'),
       age: `Age ${ageAtThisWeek} years, week ${weekOfLife} of life`
