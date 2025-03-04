@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+
+import React, { useEffect, useRef, useState } from 'react';
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { addDays, differenceInYears, format } from 'date-fns';
@@ -25,8 +26,13 @@ const Circle: React.FC<CircleProps> = ({
   weekIndex = 0
 }) => {
   const circleRef = useRef<SVGCircleElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
   const radius = size / 2 - 0.5; // Smaller stroke width adjustment for smaller circles
   const circumference = 2 * Math.PI * radius;
+  
+  // Calculate the hover size - 40% larger than the original
+  const hoverSize = size * 1.4;
+  const hoverRadius = hoverSize / 2 - 0.5;
   
   useEffect(() => {
     if (circleRef.current && percentage > 0 && percentage < 100) {
@@ -90,18 +96,24 @@ const Circle: React.FC<CircleProps> = ({
   );
 
   const renderCircle = () => {
+    // Apply size based on hover state
+    const currentSize = isHovered ? hoverSize : size;
+    const currentRadius = isHovered ? hoverRadius : radius;
+
     if (filled) {
       return (
         <div 
           className={cn(
-            "bg-calendar-filled rounded-full animate-fade-in cursor-pointer",
+            "bg-calendar-filled rounded-full animate-fade-in cursor-pointer transition-all duration-200",
             className
           )}
           style={{ 
-            width: `${size}px`, 
-            height: `${size}px`,
+            width: `${currentSize}px`, 
+            height: `${currentSize}px`,
             animationDelay: `${delay}ms`
           }}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         />
       );
     }
@@ -109,25 +121,27 @@ const Circle: React.FC<CircleProps> = ({
     if (percentage > 0) {
       return (
         <svg 
-          width={size} 
-          height={size} 
-          viewBox={`0 0 ${size} ${size}`} 
-          className={cn("animate-fade-in cursor-pointer", className)}
+          width={currentSize} 
+          height={currentSize} 
+          viewBox={`0 0 ${currentSize} ${currentSize}`} 
+          className={cn("animate-fade-in cursor-pointer transition-all duration-200", className)}
           style={{ animationDelay: `${delay}ms` }}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         >
           <circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
+            cx={currentSize / 2}
+            cy={currentSize / 2}
+            r={currentRadius}
             fill="transparent"
             stroke="#E5E7EB"
             strokeWidth="0.5" // Thinner stroke for smaller circles
           />
           <circle
             ref={circleRef}
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
+            cx={currentSize / 2}
+            cy={currentSize / 2}
+            r={currentRadius}
             fill="transparent"
             stroke="#64748B"
             strokeWidth="0.5" // Thinner stroke for smaller circles
@@ -144,14 +158,16 @@ const Circle: React.FC<CircleProps> = ({
     return (
       <div 
         className={cn(
-          "bg-calendar-empty rounded-full animate-fade-in cursor-pointer",
+          "bg-calendar-empty rounded-full animate-fade-in cursor-pointer transition-all duration-200",
           className
         )}
         style={{ 
-          width: `${size}px`, 
-          height: `${size}px`,
+          width: `${currentSize}px`, 
+          height: `${currentSize}px`,
           animationDelay: `${delay}ms`
         }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       />
     );
   };
