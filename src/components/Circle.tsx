@@ -48,30 +48,22 @@ const Circle: React.FC<CircleProps> = ({
 
   const getDateRange = () => {
     const birthdate = new Date(1980, 5, 1); // June 1, 1980 (Month is 0-indexed)
-    const today = new Date();
-
+    
     // Calculate the dates for this specific week
     const weekStart = addDays(birthdate, weekNumber * 7);
     const weekEnd = addDays(weekStart, 6);
 
-    // Calculate the age at the *end* of the week. Crucial for accuracy.
-    let ageAtThisWeek = differenceInYears(weekEnd, birthdate);
+    // Calculate age at the midpoint of the week for consistency
+    const weekMidpoint = addDays(weekStart, 3);
+    const ageAtThisWeek = differenceInYears(weekMidpoint, birthdate);
 
-    // Adjust age if the birthdate hasn't occurred yet this year.  Important for accuracy.
-    if (
-      weekEnd.getMonth() < birthdate.getMonth() ||
-      (weekEnd.getMonth() === birthdate.getMonth() && weekEnd.getDate() < birthdate.getDate())
-    ) {
-      ageAtThisWeek--;
-    }
-
-    // Calculate the number of weeks *since* the birthdate. Also vital.
-    const weeksSinceBirthdate = differenceInWeeks(weekEnd, birthdate);
+    // Calculate the week number of life
+    const weekOfLife = weekNumber + 1;
 
     return {
       start: format(weekStart, 'MMM d, yyyy'),
       end: format(weekEnd, 'MMM d, yyyy'),
-      age: `Age ${ageAtThisWeek} years, week ${weeksSinceBirthdate + 1} of life`
+      age: `Age ${ageAtThisWeek} years, week ${weekOfLife} of life`
     };
   };
 
