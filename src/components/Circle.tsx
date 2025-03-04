@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from 'react';
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -47,16 +48,22 @@ const Circle: React.FC<CircleProps> = ({
 
   const getDateRange = () => {
     const birthdate = new Date(1980, 5, 1); // June 1, 1980
+    const today = new Date();
     
+    // Calculate the dates for this specific week
     const weekStart = addDays(birthdate, weekNumber * 7);
     const weekEnd = addDays(weekStart, 6);
     
-    const yearsPassed = Math.floor(weekNumber / 52);
+    // Calculate the correct age at this point in time
+    let actualAge = differenceInYears(today, birthdate);
+    
+    // Calculate what age the person was during this specific week
+    let ageAtThisWeek = differenceInYears(weekEnd, birthdate);
     
     return {
       start: format(weekStart, 'MMM d, yyyy'),
       end: format(weekEnd, 'MMM d, yyyy'),
-      age: `Age ${yearsPassed} years, ${weekIndex + 1} ${weekIndex === 0 ? 'week' : 'weeks'}`
+      age: `Age ${ageAtThisWeek} years, ${weekIndex + 1} ${weekIndex === 0 ? 'week' : 'weeks'}`
     };
   };
 
