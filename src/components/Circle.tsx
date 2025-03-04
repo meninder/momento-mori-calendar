@@ -49,23 +49,29 @@ const Circle: React.FC<CircleProps> = ({
     const birthdate = new Date(1980, 5, 1); 
     console.log('Birthdate:', birthdate);
     
-    const yearsToAdd = Math.floor(weekNumber / 52);
-    const weeksToAdd = weekNumber % 52;
-    console.log(`Week ${weekNumber}: yearsToAdd=${yearsToAdd}, weeksToAdd=${weeksToAdd}`);
+    // Calculate the number of full years passed since birth
+    const yearsSinceBirth = Math.floor(weekNumber / 52);
 
-    let newYear = birthdate.getFullYear() + yearsToAdd;
-    let weekStart = new Date(newYear, birthdate.getMonth(), birthdate.getDate()); // Start at birthday that year
-    console.log('Initial weekStart:', weekStart);
-    
-    weekStart = addDays(weekStart, weeksToAdd * 7);  // Then add the remaining weeks.
+    //Calculate the date of the anniversary of the birth date for that year.
+    const anniversaryDate = new Date(birthdate.getFullYear() + yearsSinceBirth, birthdate.getMonth(), birthdate.getDate());
+
+    // Calculate the remaining weeks to add *after* the anniversary each year
+    const weeksSinceAnniversary = weekNumber % 52;
+    console.log(`Week ${weekNumber}: yearsSinceBirth=${yearsSinceBirth}, weeksSinceAnniversary=${weeksSinceAnniversary}`);
+
+    // Calculate the start date.  Starting point is the Anniversary
+    let weekStart = new Date(anniversaryDate);
+    console.log('Initial weekStart (Anniversary Date):', weekStart);
+    weekStart = addDays(weekStart, weeksSinceAnniversary * 7); // Add the remaining weeks from Anniversary
     console.log('After adding weeks, weekStart:', weekStart);
-
     const weekEnd = addDays(weekStart, 6);
-    const ageAtThisWeek = differenceInYears(weekStart, birthdate);
-    const weekOfLife = weekNumber % 52;
-    
     console.log('Week end:', weekEnd);
+
+    // Calculate age at the *start* of the week.
+    const ageAtThisWeek = differenceInYears(weekStart, birthdate);
     console.log('Age at this week:', ageAtThisWeek);
+
+    const weekOfLife = weeksSinceAnniversary + 1; // Weeks are typically 1-indexed for human readability
     console.log('Week of life:', weekOfLife);
   
     return {
