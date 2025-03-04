@@ -12,7 +12,7 @@ interface MementoMoriCalendarProps {
 const MementoMoriCalendar: React.FC<MementoMoriCalendarProps> = ({ 
   birthday, 
   lifeExpectancy = 85,
-  circleSize = 5,
+  circleSize = 5, // Reduced from 8 to 5
 }) => {
   const WEEKS_PER_YEAR = 52;
   const [completedWeeks, setCompletedWeeks] = useState(0);
@@ -39,7 +39,7 @@ const MementoMoriCalendar: React.FC<MementoMoriCalendarProps> = ({
 
   // Calculate grid-related values
   const columnCount = WEEKS_PER_YEAR;
-  const gridWidth = (circleSize * columnCount) + ((columnCount - 1) * 2);
+  const gridWidth = (circleSize * columnCount) + ((columnCount - 1) * 2); // Account for gap
 
   return (
     <div className="relative w-full overflow-hidden">
@@ -54,7 +54,6 @@ const MementoMoriCalendar: React.FC<MementoMoriCalendarProps> = ({
               currentWeek={Math.floor(completedWeeks / WEEKS_PER_YEAR) === rowIndex ? completedWeeks % WEEKS_PER_YEAR : null}
               currentWeekPercentage={currentWeekPercentage}
               circleSize={circleSize}
-              birthday={birthday}
             />
           ))}
         </div>
