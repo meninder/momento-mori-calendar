@@ -50,7 +50,7 @@ const Circle: React.FC<CircleProps> = ({
     const birthdate = new Date(1980, 6, 1); // June 1, 1980 (Month is 0-indexed)
   
     // Use differenceInWeeks to calculate age, accounting for partial years
-    const weeksSinceBirth = weekNumber - 1; // Adjust week number to be 0-indexed
+    const weeksSinceBirth = weekNumber;
     const targetDate = addDays(birthdate, weeksSinceBirth * 7); // Calculate the date for the *start* of the week
   
     // Calculate age at this target date
@@ -70,7 +70,6 @@ const Circle: React.FC<CircleProps> = ({
       age: `Age ${ageAtThisWeek} years, ${weekOfYear} weeks of life`
     };
   };
-
 
   const dateRange = getDateRange();
   const tooltipContent = (
