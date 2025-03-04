@@ -134,7 +134,7 @@
   
   /* Enhancement for hover states */
   .hover\:z-10:hover {
-    z-index: 10;
+    z-index: 10 !important; /* Added !important to override any other z-index values */
   }
 }
 
@@ -147,3 +147,8 @@
   }
 }
 
+/* Add spacing to allow room for the circles to expand on hover without disrupting layout */
+.calendar-grid > div > div {
+  margin: 2px;
+  position: relative;
+}

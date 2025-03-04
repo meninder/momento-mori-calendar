@@ -30,8 +30,8 @@ const Circle: React.FC<CircleProps> = ({
   const radius = size / 2 - 0.5; // Smaller stroke width adjustment for smaller circles
   const circumference = 2 * Math.PI * radius;
   
-  // Calculate the hover size - 100% larger than the original for more visibility
-  const hoverSize = size * 2;
+  // Calculate the hover size - significantly larger for more noticeable effect
+  const hoverSize = size * 3; // Tripled the size for more impact
   const hoverRadius = hoverSize / 2 - 0.5;
   
   useEffect(() => {
@@ -104,15 +104,17 @@ const Circle: React.FC<CircleProps> = ({
       return (
         <div 
           className={cn(
-            "bg-calendar-filled rounded-full animate-fade-in cursor-pointer transition-all duration-200 hover:z-10",
+            "bg-calendar-filled rounded-full animate-fade-in cursor-pointer transition-all duration-300 hover:z-10",
             className
           )}
           style={{ 
             width: `${currentSize}px`, 
             height: `${currentSize}px`,
             animationDelay: `${delay}ms`,
-            transform: isHovered ? "scale(1.2)" : "scale(1)",
-            boxShadow: isHovered ? "0 0 4px rgba(0,0,0,0.3)" : "none"
+            transform: isHovered ? "scale(1.8)" : "scale(1)", // Increased scale
+            boxShadow: isHovered ? "0 0 8px rgba(0,0,0,0.4)" : "none", // More pronounced shadow
+            position: "relative", // Ensure z-index works
+            transition: "all 0.2s ease-out" // Smoother transition
           }}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
@@ -126,11 +128,13 @@ const Circle: React.FC<CircleProps> = ({
           width={currentSize} 
           height={currentSize} 
           viewBox={`0 0 ${currentSize} ${currentSize}`} 
-          className={cn("animate-fade-in cursor-pointer transition-all duration-200 hover:z-10", className)}
+          className={cn("animate-fade-in cursor-pointer transition-all duration-300 hover:z-10", className)}
           style={{ 
             animationDelay: `${delay}ms`,
-            transform: isHovered ? "scale(1.2)" : "scale(1)",
-            filter: isHovered ? "drop-shadow(0 0 2px rgba(0,0,0,0.3))" : "none"
+            transform: isHovered ? "scale(1.8)" : "scale(1)", // Increased scale
+            filter: isHovered ? "drop-shadow(0 0 4px rgba(0,0,0,0.4))" : "none", // More pronounced shadow
+            position: "relative", // Ensure z-index works
+            transition: "all 0.2s ease-out" // Smoother transition
           }}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
@@ -149,8 +153,8 @@ const Circle: React.FC<CircleProps> = ({
             cy={currentSize / 2}
             r={currentRadius}
             fill="transparent"
-            stroke={isHovered ? "#4B5563" : "#64748B"} // Darker when hovered
-            strokeWidth={isHovered ? "0.8" : "0.5"} // Thicker stroke when hovered
+            stroke={isHovered ? "#374151" : "#64748B"} // Darker when hovered
+            strokeWidth={isHovered ? "1" : "0.5"} // Thicker stroke when hovered
             strokeLinecap="round"
             style={{
               transformOrigin: 'center',
@@ -164,15 +168,17 @@ const Circle: React.FC<CircleProps> = ({
     return (
       <div 
         className={cn(
-          "bg-calendar-empty rounded-full animate-fade-in cursor-pointer transition-all duration-200 hover:z-10",
+          "bg-calendar-empty rounded-full animate-fade-in cursor-pointer transition-all duration-300 hover:z-10",
           className
         )}
         style={{ 
           width: `${currentSize}px`, 
           height: `${currentSize}px`,
           animationDelay: `${delay}ms`,
-          transform: isHovered ? "scale(1.2)" : "scale(1)",
-          boxShadow: isHovered ? "0 0 4px rgba(0,0,0,0.3)" : "none"
+          transform: isHovered ? "scale(1.8)" : "scale(1)", // Increased scale
+          boxShadow: isHovered ? "0 0 8px rgba(0,0,0,0.4)" : "none", // More pronounced shadow
+          position: "relative", // Ensure z-index works
+          transition: "all 0.2s ease-out" // Smoother transition
         }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -183,7 +189,7 @@ const Circle: React.FC<CircleProps> = ({
   return (
     <Tooltip delayDuration={50}>
       <TooltipTrigger asChild>
-        <div className="inline-block cursor-pointer">
+        <div className="inline-block cursor-pointer relative">
           {renderCircle()}
         </div>
       </TooltipTrigger>
