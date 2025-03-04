@@ -8,6 +8,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from '@/components/ui/button';
 import { Settings } from 'lucide-react';
 import { differenceInYears } from 'date-fns';
+import { TooltipProvider } from '@/components/ui/tooltip';
 
 const Index = () => {
   // Hardcode default birthday to June 1, 1980
