@@ -13,20 +13,22 @@ interface CircleProps {
   weekNumber?: number;
   row?: number;
   weekIndex?: number;
+  birthday?: Date;
 }
 
 const Circle: React.FC<CircleProps> = ({ 
   filled = false, 
   percentage = 0, 
-  size = 5, // Default to smaller size
+  size = 5,
   delay = 0,
   className,
   weekNumber = 0,
   row = 0,
-  weekIndex = 0
+  weekIndex = 0,
+  birthday = new Date(1980, 5, 1) // Default birthday is June 1, 1980
 }) => {
   const circleRef = useRef<SVGCircleElement>(null);
-  const radius = size / 2 - 0.5; // Smaller stroke width adjustment for smaller circles
+  const radius = size / 2 - 0.5;
   const circumference = 2 * Math.PI * radius;
   
   useEffect(() => {
@@ -47,15 +49,13 @@ const Circle: React.FC<CircleProps> = ({
   }, [percentage, circumference, delay]);
 
   const getDateRange = () => {
-    const birthdate = new Date(1980, 5, 1); // June 1, 1980 (Month is 0-indexed)
-    
     // Calculate the dates for this specific week
-    const weekStart = addDays(birthdate, weekNumber * 7);
+    const weekStart = addDays(birthday, weekNumber * 7);
     const weekEnd = addDays(weekStart, 6);
 
     // Calculate age at the midpoint of the week for consistency
     const weekMidpoint = addDays(weekStart, 3);
-    const ageAtThisWeek = differenceInYears(weekMidpoint, birthdate);
+    const ageAtThisWeek = differenceInYears(weekMidpoint, birthday);
 
     // Calculate the week number of life
     const weekOfLife = weekNumber + 1;
@@ -107,7 +107,7 @@ const Circle: React.FC<CircleProps> = ({
             r={radius}
             fill="transparent"
             stroke="#E5E7EB"
-            strokeWidth="0.5" // Thinner stroke for smaller circles
+            strokeWidth="0.5"
           />
           <circle
             ref={circleRef}
@@ -116,7 +116,7 @@ const Circle: React.FC<CircleProps> = ({
             r={radius}
             fill="transparent"
             stroke="#64748B"
-            strokeWidth="0.5" // Thinner stroke for smaller circles
+            strokeWidth="0.5"
             strokeLinecap="round"
             style={{
               transformOrigin: 'center',
