@@ -41,8 +41,10 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center py-12 px-4 md:px-8 bg-gradient-to-b from-slate-50 to-white">
-      <div className="w-full max-w-4xl mx-auto animate-fade-up">
+    <div className="min-h-screen flex flex-col items-center py-8 px-4 md:px-8 bg-gradient-to-b from-slate-50 to-white">
+      <div className="w-full mx-auto animate-fade-up">
+        <h1 className="text-3xl font-serif text-center mb-6">Life in Weeks</h1>
+        
         {/* Side panel trigger button */}
         <div className="fixed right-4 top-4 z-10">
           <Sheet>
@@ -66,7 +68,7 @@ const Index = () => {
         </div>
 
         {birthday && (
-          <div className="mt-8 space-y-4 animate-fade-up">
+          <div className="mt-4 space-y-4 animate-fade-up">
             <Card className="border border-slate-200 shadow-sm bg-white/90 backdrop-blur-sm p-4 rounded-lg">
               <CardContent className="p-0">
                 <TooltipProvider delayDuration={50}>
@@ -79,7 +81,7 @@ const Index = () => {
             </Card>
             
             {birthday && (
-              <div className="text-center text-sm text-slate-500 mt-8">
+              <div className="text-center text-sm text-slate-500 mt-4">
                 <p>
                   "Remember that you will die. Let that inform how you live today."
                 </p>

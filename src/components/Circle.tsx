@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -53,7 +52,6 @@ const Circle: React.FC<CircleProps> = ({
 
   const getDateRange = () => {
     const birthdate = new Date(1980, 5, 1); 
-    console.log('Birthdate:', birthdate);
     
     // Calculate the number of full years passed since birth
     const yearsSinceBirth = Math.floor(weekNumber / 52);
@@ -63,22 +61,16 @@ const Circle: React.FC<CircleProps> = ({
 
     // Calculate the remaining weeks to add *after* the anniversary each year
     const weeksSinceAnniversary = weekNumber % 52;
-    console.log(`Week ${weekNumber}: yearsSinceBirth=${yearsSinceBirth}, weeksSinceAnniversary=${weeksSinceAnniversary}`);
 
     // Calculate the start date.  Starting point is the Anniversary
     let weekStart = new Date(anniversaryDate);
-    console.log('Initial weekStart (Anniversary Date):', weekStart);
     weekStart = addDays(weekStart, weeksSinceAnniversary * 7); // Add the remaining weeks from Anniversary
-    console.log('After adding weeks, weekStart:', weekStart);
     const weekEnd = addDays(weekStart, 6);
-    console.log('Week end:', weekEnd);
 
     // Calculate age at the *start* of the week.
     const ageAtThisWeek = differenceInYears(weekStart, birthdate);
-    console.log('Age at this week:', ageAtThisWeek);
 
     const weekOfLife = weeksSinceAnniversary + 1; // Weeks are typically 1-indexed for human readability
-    console.log('Week of life:', weekOfLife);
   
     return {
       start: format(weekStart, 'MMM d, yyyy'),
