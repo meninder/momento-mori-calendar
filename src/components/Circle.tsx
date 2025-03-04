@@ -2,7 +2,7 @@
 import React, { useEffect, useRef } from 'react';
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { addDays, differenceInYears, format, differenceInWeeks } from 'date-fns';
+import { addDays, differenceInYears, format } from 'date-fns';
 
 interface CircleProps {
   filled?: boolean;
@@ -80,7 +80,7 @@ const Circle: React.FC<CircleProps> = ({
       return (
         <div 
           className={cn(
-            "bg-calendar-filled rounded-full animate-fade-in cursor-default",
+            "bg-calendar-filled rounded-full animate-fade-in cursor-pointer",
             className
           )}
           style={{ 
@@ -98,7 +98,7 @@ const Circle: React.FC<CircleProps> = ({
           width={size} 
           height={size} 
           viewBox={`0 0 ${size} ${size}`} 
-          className={cn("animate-fade-in cursor-default", className)}
+          className={cn("animate-fade-in cursor-pointer", className)}
           style={{ animationDelay: `${delay}ms` }}
         >
           <circle
@@ -130,7 +130,7 @@ const Circle: React.FC<CircleProps> = ({
     return (
       <div 
         className={cn(
-          "bg-calendar-empty rounded-full animate-fade-in cursor-default",
+          "bg-calendar-empty rounded-full animate-fade-in cursor-pointer",
           className
         )}
         style={{ 
@@ -143,18 +143,16 @@ const Circle: React.FC<CircleProps> = ({
   };
 
   return (
-    <TooltipProvider>
-      <Tooltip delayDuration={300}>
-        <TooltipTrigger asChild>
-          <div className="inline-block cursor-default" style={{ cursor: 'default' }}>
-            {renderCircle()}
-          </div>
-        </TooltipTrigger>
-        <TooltipContent side="top" className="z-50 text-xs cursor-default">
-          {tooltipContent}
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+    <Tooltip delayDuration={50}>
+      <TooltipTrigger asChild>
+        <div className="inline-block cursor-pointer">
+          {renderCircle()}
+        </div>
+      </TooltipTrigger>
+      <TooltipContent side="top" align="center" className="z-50 text-xs">
+        {tooltipContent}
+      </TooltipContent>
+    </Tooltip>
   );
 };
 

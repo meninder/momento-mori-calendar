@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import BirthdayInput from '@/components/BirthdayInput';
 import MementoMoriCalendar from '@/components/MementoMoriCalendar';
@@ -41,8 +42,6 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col items-center py-12 px-4 md:px-8 bg-gradient-to-b from-slate-50 to-white">
       <div className="w-full max-w-4xl mx-auto animate-fade-up">
-        {/* Removed the header and title */}
-
         {/* Side panel trigger button */}
         <div className="fixed right-4 top-4 z-10">
           <Sheet>
@@ -69,10 +68,12 @@ const Index = () => {
           <div className="mt-8 space-y-4 animate-fade-up">
             <Card className="border border-slate-200 shadow-sm bg-white/90 backdrop-blur-sm p-4 rounded-lg">
               <CardContent className="p-0">
-                <MementoMoriCalendar 
-                  birthday={birthday} 
-                  circleSize={5}
-                />
+                <TooltipProvider delayDuration={50}>
+                  <MementoMoriCalendar 
+                    birthday={birthday} 
+                    circleSize={5}
+                  />
+                </TooltipProvider>
               </CardContent>
             </Card>
             
