@@ -15,23 +15,6 @@ interface CircleProps {
   weekIndex?: number;
 }
 
-// DEBUGGING: Create a separate testing function
-const testDateRange = (weekNum: number) => {
-  const birthdate = new Date(1980, 6, 1);
-  const weeksSinceBirth = weekNum - 1;
-  const targetDate = addDays(birthdate, weeksSinceBirth * 7);
-  let ageAtThisWeek = differenceInYears(targetDate, birthdate);
-  const weekStart = addDays(birthdate, weeksSinceBirth * 7);
-  const weekEnd = addDays(weekStart, 6);
-  const weekOfYear = (weekNum - 1) % 52 + 1;
-
-  return {
-      start: format(weekStart, 'MMM d, yyyy'),
-      end: format(weekEnd, 'MMM d, yyyy'),
-      age: `Age ${ageAtThisWeek} years, ${weekOfYear} weeks of life`
-  };
-};
-
 const Circle: React.FC<CircleProps> = ({ 
   filled = false, 
   percentage = 0, 
@@ -64,27 +47,23 @@ const Circle: React.FC<CircleProps> = ({
   }, [percentage, circumference, delay]);
 
   const getDateRange = () => {
-    const birthdate = new Date(1980, 6, 1); // June 1, 1980 (Month is 0-indexed)
-  
-    // Use differenceInWeeks to calculate age, accounting for partial years
-    const weeksSinceBirth = weekNumber - 1; // Adjust week number to be 0-indexed
-    const targetDate = addDays(birthdate, weeksSinceBirth * 7); // Calculate the date for the *start* of the week
-  
-    // Calculate age at this target date
-    let ageAtThisWeek = differenceInYears(targetDate, birthdate);
-  
+    const birthdate = new Date(1980, 5, 1); // June 1, 1980 (Month is 0-indexed)
+    
     // Calculate the dates for this specific week
-    const weekStart = addDays(birthdate, weeksSinceBirth * 7); // Recalculate Week start based on weeksSinceBirth
+    const weekStart = addDays(birthdate, weekNumber * 7);
     const weekEnd = addDays(weekStart, 6);
-  
-    // Calculate the week number of life (add 1 to make it human-readable, starting from 1)
-    const weekOfYear = (weekNumber - 1) % 52 + 1;
-  
-  
+
+    // Calculate age at the midpoint of the week for consistency
+    const weekMidpoint = addDays(weekStart, 3);
+    const ageAtThisWeek = differenceInYears(weekMidpoint, birthdate);
+
+    // Calculate the week number of life
+    const weekOfLife = weekNumber + 1;
+
     return {
       start: format(weekStart, 'MMM d, yyyy'),
       end: format(weekEnd, 'MMM d, yyyy'),
-      age: `Age ${ageAtThisWeek} years, ${weekOfYear} weeks of life`
+      age: `Age ${ageAtThisWeek} years, week ${weekOfLife} of life`
     };
   };
 
@@ -178,10 +157,3 @@ const Circle: React.FC<CircleProps> = ({
 };
 
 export default Circle;
-
-// For debugging purposes, we can log test results using a normal function call
-// console.log("Week 100:", testDateRange(100));
-// console.log("Week 521:", testDateRange(521));
-// console.log("Week 522:", testDateRange(522));
-// console.log("Week 572:", testDateRange(572));
-// console.log("Week 1040:", testDateRange(1040));
