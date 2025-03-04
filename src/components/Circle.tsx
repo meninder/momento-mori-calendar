@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -48,18 +47,26 @@ const Circle: React.FC<CircleProps> = ({
 
   const getDateRange = () => {
     const birthdate = new Date(1980, 5, 1); 
+    console.log('Birthdate:', birthdate);
     
     const yearsToAdd = Math.floor(weekNumber / 52);
     const weeksToAdd = weekNumber % 52;
+    console.log(`Week ${weekNumber}: yearsToAdd=${yearsToAdd}, weeksToAdd=${weeksToAdd}`);
 
     let newYear = birthdate.getFullYear() + yearsToAdd;
     let weekStart = new Date(newYear, birthdate.getMonth(), birthdate.getDate()); // Start at birthday that year
+    console.log('Initial weekStart:', weekStart);
+    
     weekStart = addDays(weekStart, weeksToAdd * 7);  // Then add the remaining weeks.
+    console.log('After adding weeks, weekStart:', weekStart);
 
     const weekEnd = addDays(weekStart, 6);
     const ageAtThisWeek = differenceInYears(weekStart, birthdate);
     const weekOfLife = weekNumber % 52;
     
+    console.log('Week end:', weekEnd);
+    console.log('Age at this week:', ageAtThisWeek);
+    console.log('Week of life:', weekOfLife);
   
     return {
       start: format(weekStart, 'MMM d, yyyy'),
