@@ -131,4 +131,19 @@
   .grid-cols-52 {
     grid-template-columns: repeat(52, minmax(0, 1fr));
   }
+  
+  /* Enhancement for hover states */
+  .hover\:z-10:hover {
+    z-index: 10;
+  }
 }
+
+@keyframes fill-circle {
+  from {
+    stroke-dashoffset: var(--circumference);
+  }
+  to {
+    stroke-dashoffset: var(--final-offset, 0);
+  }
+}
+
