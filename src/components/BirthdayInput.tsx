@@ -35,7 +35,7 @@ const BirthdayInput: React.FC<BirthdayInputProps> = ({ date, setDate, className 
             )}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
-            {date ? format(date, "PPP") : <span>Pick a date</span>}
+            {date ? format(date, "MMMM d, yyyy") : <span>Pick a date</span>}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="start">
@@ -44,7 +44,9 @@ const BirthdayInput: React.FC<BirthdayInputProps> = ({ date, setDate, className 
             selected={date}
             onSelect={setDate}
             initialFocus
-            captionLayout="dropdown-buttons"
+            className="pointer-events-auto"
+            defaultMonth={date}
+            disabled={(date) => date > new Date()}
             fromYear={1900}
             toYear={new Date().getFullYear()}
           />

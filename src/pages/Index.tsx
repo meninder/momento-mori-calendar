@@ -11,8 +11,8 @@ import { differenceInYears } from 'date-fns';
 import { TooltipProvider } from '@/components/ui/tooltip';
 
 const Index = () => {
-  // Initialize with a default birthday of June 1, 1980
-  const [birthday, setBirthday] = useState<Date | undefined>(new Date(1980, 5, 1));
+  // Initialize with a default birthday of January 1, 1990
+  const [birthday, setBirthday] = useState<Date | undefined>(new Date(1990, 0, 1));
   const { toast } = useToast();
   const [hasViewed, setHasViewed] = useState(false);
   
