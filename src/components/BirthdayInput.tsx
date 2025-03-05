@@ -40,10 +40,8 @@ const BirthdayInput: React.FC<BirthdayInputProps> = ({ date, setDate, className 
   // Update parent component's date when any value changes
   useEffect(() => {
     const newDate = new Date(year, month, day);
-    if (date?.getTime() !== newDate.getTime()) {
-      setDate(newDate);
-    }
-  }, [month, day, year, setDate, date]);
+    setDate(newDate);
+  }, [month, day, year, setDate]);
   
   // Generate arrays for months, days, and years
   const months = [

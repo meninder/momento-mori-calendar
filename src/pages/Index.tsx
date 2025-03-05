@@ -2,17 +2,18 @@
 import React, { useState } from 'react';
 import BirthdayInput from '@/components/BirthdayInput';
 import MementoMoriCalendar from '@/components/MementoMoriCalendar';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent } from '@/components/ui/card';
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from '@/components/ui/button';
-import { Settings } from 'lucide-react';
+import { Settings, RefreshCw } from 'lucide-react';
 import { differenceInYears } from 'date-fns';
 import { TooltipProvider } from '@/components/ui/tooltip';
 
 const Index = () => {
-  // Initialize with a default birthday of January 1, 1990
-  const [birthday, setBirthday] = useState<Date | undefined>(new Date(1990, 0, 1));
+  // Initialize with a default birthday of June 1, 1980
+  const [birthday, setBirthday] = useState<Date | undefined>(new Date(1980, 5, 1));
+  const [tempBirthday, setTempBirthday] = useState<Date | undefined>(new Date(1980, 5, 1));
   const { toast } = useToast();
   const [hasViewed, setHasViewed] = useState(false);
   
@@ -26,18 +27,24 @@ const Index = () => {
       return;
     }
     
-    // Only display toast when user changes the date (not on initial load)
-    if (date && birthday && date.getTime() !== birthday.getTime()) {
-      const age = differenceInYears(new Date(), date);
+    // Update the temp birthday without recalculating
+    setTempBirthday(date);
+  };
+
+  const handleRefresh = () => {
+    // Only display toast when user refreshes with a new date
+    if (tempBirthday && (!birthday || tempBirthday.getTime() !== birthday.getTime())) {
+      const age = differenceInYears(new Date(), tempBirthday);
       
       toast({
         title: "Calendar updated",
         description: `You've lived ${age} years. Each circle represents one week of your life.`,
       });
+
+      // Update the actual birthday used by the calendar
+      setBirthday(tempBirthday);
+      setHasViewed(true);
     }
-    
-    setBirthday(date);
-    setHasViewed(true);
   };
 
   return (
@@ -58,13 +65,22 @@ const Index = () => {
               <div className="py-6">
                 <h3 className="text-lg font-medium mb-4">Calendar Settings</h3>
                 <BirthdayInput
-                  date={birthday}
+                  date={tempBirthday}
                   setDate={handleDateChange}
                   className="w-full"
                 />
+                <div className="mt-4">
+                  <Button 
+                    onClick={handleRefresh}
+                    className="w-full"
+                  >
+                    <RefreshCw className="h-4 w-4 mr-2" />
+                    Update Calendar
+                  </Button>
+                </div>
                 <p className="text-sm text-muted-foreground mt-2">
                   {birthday ? 
-                    "Change your birthday to update the calendar." : 
+                    "Change your birthday and click Update to refresh the calendar." : 
                     "Please select your birthday to generate the calendar."}
                 </p>
               </div>
