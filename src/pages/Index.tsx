@@ -95,12 +95,29 @@ const Index = () => {
             <p className="text-lg text-slate-600 mb-4">
               Select your birthday in the settings to generate your Memento Mori Calendar
             </p>
-            <SheetTrigger asChild>
-              <Button>
-                <Settings className="mr-2 h-4 w-4" />
-                Open Settings
-              </Button>
-            </SheetTrigger>
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button>
+                  <Settings className="mr-2 h-4 w-4" />
+                  Open Settings
+                </Button>
+              </SheetTrigger>
+              <SheetContent>
+                <div className="py-6">
+                  <h3 className="text-lg font-medium mb-4">Calendar Settings</h3>
+                  <BirthdayInput
+                    date={birthday}
+                    setDate={handleDateChange}
+                    className="w-full"
+                  />
+                  {!birthday && (
+                    <p className="text-sm text-muted-foreground mt-2">
+                      Please select your birthday to generate the calendar.
+                    </p>
+                  )}
+                </div>
+              </SheetContent>
+            </Sheet>
           </div>
         )}
       </div>
