@@ -11,8 +11,8 @@ import { differenceInYears } from 'date-fns';
 import { TooltipProvider } from '@/components/ui/tooltip';
 
 const Index = () => {
-  // Use state for birthday with no default value
-  const [birthday, setBirthday] = useState<Date | undefined>(undefined);
+  // Initialize with a default birthday of June 1, 1980
+  const [birthday, setBirthday] = useState<Date | undefined>(new Date(1980, 5, 1));
   const { toast } = useToast();
   const [hasViewed, setHasViewed] = useState(false);
   
@@ -26,17 +26,18 @@ const Index = () => {
       return;
     }
     
-    setBirthday(date);
-    
-    if (date && !hasViewed) {
-      setHasViewed(true);
+    // Only display toast when user changes the date (not on initial load)
+    if (date && birthday && date.getTime() !== birthday.getTime()) {
       const age = differenceInYears(new Date(), date);
       
       toast({
-        title: "Calendar generated",
+        title: "Calendar updated",
         description: `You've lived ${age} years. Each circle represents one week of your life.`,
       });
     }
+    
+    setBirthday(date);
+    setHasViewed(true);
   };
 
   return (
@@ -61,65 +62,34 @@ const Index = () => {
                   setDate={handleDateChange}
                   className="w-full"
                 />
-                {!birthday && (
-                  <p className="text-sm text-muted-foreground mt-2">
-                    Please select your birthday to generate the calendar.
-                  </p>
-                )}
+                <p className="text-sm text-muted-foreground mt-2">
+                  {birthday ? 
+                    "Change your birthday to update the calendar." : 
+                    "Please select your birthday to generate the calendar."}
+                </p>
               </div>
             </SheetContent>
           </Sheet>
         </div>
 
-        {birthday ? (
-          <div className="mt-4 space-y-4 animate-fade-up">
-            <Card className="border border-slate-200 shadow-sm bg-white/90 backdrop-blur-sm p-4 rounded-lg">
-              <CardContent className="p-0">
-                <TooltipProvider delayDuration={50}>
-                  <MementoMoriCalendar 
-                    birthday={birthday} 
-                    circleSize={5}
-                  />
-                </TooltipProvider>
-              </CardContent>
-            </Card>
-            
-            <div className="text-center text-sm text-slate-500 mt-4">
-              <p>
-                "Remember that you will die. Let that inform how you live today."
-              </p>
-            </div>
-          </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center h-[50vh] text-center">
-            <p className="text-lg text-slate-600 mb-4">
-              Select your birthday in the settings to generate your Memento Mori Calendar
+        <div className="mt-4 space-y-4 animate-fade-up">
+          <Card className="border border-slate-200 shadow-sm bg-white/90 backdrop-blur-sm p-4 rounded-lg">
+            <CardContent className="p-0">
+              <TooltipProvider delayDuration={50}>
+                <MementoMoriCalendar 
+                  birthday={birthday ?? new Date(1980, 5, 1)} 
+                  circleSize={5}
+                />
+              </TooltipProvider>
+            </CardContent>
+          </Card>
+          
+          <div className="text-center text-sm text-slate-500 mt-4">
+            <p>
+              "Remember that you will die. Let that inform how you live today."
             </p>
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button>
-                  <Settings className="mr-2 h-4 w-4" />
-                  Open Settings
-                </Button>
-              </SheetTrigger>
-              <SheetContent>
-                <div className="py-6">
-                  <h3 className="text-lg font-medium mb-4">Calendar Settings</h3>
-                  <BirthdayInput
-                    date={birthday}
-                    setDate={handleDateChange}
-                    className="w-full"
-                  />
-                  {!birthday && (
-                    <p className="text-sm text-muted-foreground mt-2">
-                      Please select your birthday to generate the calendar.
-                    </p>
-                  )}
-                </div>
-              </SheetContent>
-            </Sheet>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
