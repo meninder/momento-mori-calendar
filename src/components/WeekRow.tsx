@@ -9,15 +9,17 @@ interface WeekRowProps {
   currentWeek: number | null;
   currentWeekPercentage: number;
   circleSize?: number;
+  birthday: Date;
 }
 
-const WeekRow: React.FC<WeekRowProps> = ({ 
-  row, 
-  completedWeeks, 
-  totalWeeks, 
-  currentWeek, 
+const WeekRow: React.FC<WeekRowProps> = ({
+  row,
+  completedWeeks,
+  totalWeeks,
+  currentWeek,
   currentWeekPercentage,
-  circleSize = 5 // This is the current size (5px)
+  circleSize = 5, // This is the current size (5px)
+  birthday
 }) => {
   // Calculate base delay for the animation
   const baseDelay = row * 5;
@@ -36,7 +38,7 @@ const WeekRow: React.FC<WeekRowProps> = ({
         const animationDelay = baseDelay + weekIndex * 3; // Staggered delay for each circle
 
         return (
-          <Circle 
+          <Circle
             key={weekIndex}
             filled={isFilled}
             percentage={isCurrentWeek ? currentWeekPercentage : 0}
@@ -45,6 +47,7 @@ const WeekRow: React.FC<WeekRowProps> = ({
             weekNumber={weekNumber}
             row={row}
             weekIndex={weekIndex}
+            birthday={birthday}
           />
         );
       })}

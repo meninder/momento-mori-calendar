@@ -12,17 +12,19 @@ interface CircleProps {
   weekNumber?: number;
   row?: number;
   weekIndex?: number;
+  birthday: Date;
 }
 
-const Circle: React.FC<CircleProps> = ({ 
-  filled = false, 
-  percentage = 0, 
+const Circle: React.FC<CircleProps> = ({
+  filled = false,
+  percentage = 0,
   size = 5, // Default to smaller size
   delay = 0,
   className,
   weekNumber = 0,
   row = 0,
-  weekIndex = 0
+  weekIndex = 0,
+  birthday
 }) => {
   const circleRef = useRef<SVGCircleElement>(null);
   const [isHovered, setIsHovered] = useState(false);
@@ -51,13 +53,11 @@ const Circle: React.FC<CircleProps> = ({
   }, [percentage, circumference, delay]);
 
   const getDateRange = () => {
-    const birthdate = new Date(1980, 5, 1); 
-    
     // Calculate the number of full years passed since birth
     const yearsSinceBirth = Math.floor(weekNumber / 52);
 
     //Calculate the date of the anniversary of the birth date for that year.
-    const anniversaryDate = new Date(birthdate.getFullYear() + yearsSinceBirth, birthdate.getMonth(), birthdate.getDate());
+    const anniversaryDate = new Date(birthday.getFullYear() + yearsSinceBirth, birthday.getMonth(), birthday.getDate());
 
     // Calculate the remaining weeks to add *after* the anniversary each year
     const weeksSinceAnniversary = weekNumber % 52;
@@ -68,7 +68,7 @@ const Circle: React.FC<CircleProps> = ({
     const weekEnd = addDays(weekStart, 6);
 
     // Calculate age at the *start* of the week.
-    const ageAtThisWeek = differenceInYears(weekStart, birthdate);
+    const ageAtThisWeek = differenceInYears(weekStart, birthday);
 
     const weekOfLife = weeksSinceAnniversary + 1; // Weeks are typically 1-indexed for human readability
   

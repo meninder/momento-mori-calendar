@@ -82,9 +82,8 @@ Index.tsx (main page)
 
 **Circle.tsx** - Individual week visualization:
 - Three states: filled (past), partial (current week), empty (future)
-- Tooltip shows age, week number, and date range for each circle
+- Tooltip shows age, week number, and date range for each circle, computed from the `birthday` prop threaded down from `Index.tsx → MementoMoriCalendar → WeekRow → Circle`
 - Hover effects with scale transformation and color changes
-- **Important:** Hardcoded birthdate of June 1, 1980 in `getDateRange()` method (line 54) - this should match the birthday from parent component but currently doesn't
 - Uses SVG for partial week circles with animated stroke
 
 **BirthdayInput.tsx** - Date input component:
@@ -95,11 +94,10 @@ Index.tsx (main page)
 
 ### UI Component Library
 
-Uses **shadcn-ui** components built on Radix UI primitives. All UI components are in `src/components/ui/`. The project uses a comprehensive set including:
-- Form controls: Button, Input, Select, Switch, etc.
-- Overlays: Dialog, Sheet, Popover, Tooltip
-- Feedback: Toast (via Sonner), Alert
-- Layout: Card, Separator, Tabs
+Uses **shadcn-ui** components built on Radix UI primitives, in `src/components/ui/`. Only the components actually consumed by the app are kept (the original scaffold included the full kit; unused components were removed):
+- `button`, `card`, `label`, `select`, `sheet`, `sonner`, `toast`, `toaster`, `tooltip`
+
+When adding a new shadcn component, copy its file into `src/components/ui/` and add the corresponding `@radix-ui/*` package to `dependencies` in `package.json`.
 
 ### Styling
 
@@ -144,18 +142,18 @@ Circles have staggered fade-in animations:
 
 ### Deployment
 
-- **Build output:** `docs/` directory (not `dist/`)
-- **Deployment:** GitHub Pages via push to `master` branch
+- **Build output:** `docs/` directory (not `dist/`) — the build output is committed and serves as the deployment artifact, so run `npm run build` before pushing user-facing changes
+- **Deployment:** GitHub Pages, served from the `docs/` directory on the `main` branch
 - **Important:** Uses HashRouter because GitHub Pages doesn't support client-side routing with BrowserRouter
 
 ## Common Gotchas
 
-1. **Hardcoded birthdate in Circle.tsx:** The `getDateRange()` function has a hardcoded birthdate (June 1, 1980) that doesn't sync with the user-selected birthday. This affects tooltip date calculations.
+1. **HashRouter requirement:** Don't change to BrowserRouter - it won't work with GitHub Pages deployment. Internal links must use `<Link>` from `react-router-dom` (not bare `<a href="/">`) so the hash route is preserved.
 
-2. **HashRouter requirement:** Don't change to BrowserRouter - it won't work with GitHub Pages deployment.
+2. **Two-state birthday management:** Index.tsx maintains both `birthday` (drives calendar) and `tempBirthday` (settings panel) to prevent recalculation on every change.
 
-3. **Two-state birthday management:** Index.tsx maintains both `birthday` (drives calendar) and `tempBirthday` (settings panel) to prevent recalculation on every change.
+3. **Circle size:** Default is 5px. Grid width calculations depend on this value, so changes require updating spacing calculations.
 
-4. **Circle size:** Default is 5px. Grid width calculations depend on this value, so changes require updating spacing calculations.
+4. **Path alias:** Always use `@/` for imports from `src/`, not relative paths like `../`.
 
-5. **Path alias:** Always use `@/` for imports from `src/`, not relative paths like `../`.
+5. **Rebuild before committing:** `docs/` is checked in. Forgetting `npm run build` leaves the deployed site behind the source.

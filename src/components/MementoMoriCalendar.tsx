@@ -67,6 +67,7 @@ const MementoMoriCalendar: React.FC<MementoMoriCalendarProps> = ({
                 currentWeek={Math.floor(completedWeeks / WEEKS_PER_YEAR) === rowIndex ? completedWeeks % WEEKS_PER_YEAR : null}
                 currentWeekPercentage={currentWeekPercentage}
                 circleSize={circleSize}
+                birthday={birthday}
               />
             ))}
           </div>
@@ -84,6 +85,7 @@ const MementoMoriCalendar: React.FC<MementoMoriCalendarProps> = ({
                   currentWeek={Math.floor(completedWeeks / WEEKS_PER_YEAR) === actualRowIndex ? completedWeeks % WEEKS_PER_YEAR : null}
                   currentWeekPercentage={currentWeekPercentage}
                   circleSize={circleSize}
+                  birthday={birthday}
                 />
               );
             })}
