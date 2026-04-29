@@ -54,4 +54,4 @@ The project is configured for GitHub Pages deployment:
 2. Push to `master` branch
 3. GitHub Pages serves from the `docs/` directory
 
-The app is currently hosted at GitHub Pages.
+The app is hosted at: [https://meninder.github.io/momento-mori-calendar/](https://meninder.github.io/momento-mori-calendar/)
