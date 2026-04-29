@@ -15,8 +15,8 @@ const Index = () => {
   const [birthday, setBirthday] = useState<Date | undefined>(new Date(1980, 5, 1));
   const [tempBirthday, setTempBirthday] = useState<Date | undefined>(new Date(1980, 5, 1));
   const { toast } = useToast();
-  const [hasViewed, setHasViewed] = useState(false);
-  
+
+
   const handleDateChange = (date: Date | undefined) => {
     if (date && date > new Date()) {
       toast({
@@ -43,7 +43,6 @@ const Index = () => {
 
       // Update the actual birthday used by the calendar
       setBirthday(tempBirthday);
-      setHasViewed(true);
     }
   };
 
